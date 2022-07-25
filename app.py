@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from morphemes import Morphemes
 
-m = Morphemes("./")
+m = Morphemes("./morphemes")
 m.parse("unsuccessful")
 
 # Init app

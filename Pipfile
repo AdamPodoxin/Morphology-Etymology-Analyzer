@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 flask = "*"
 morphemes = "*"
+requests = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 

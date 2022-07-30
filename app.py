@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
 from morphemes import Morphemes
+from morph import get_morphs
 
 m = Morphemes("./morphemes")
-m.parse("unsuccessful")
 
 # Init app
 app = Flask(__name__)
@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route("/morphemes", methods=["GET"])
 def morphemes():
     word = request.args["word"]
-    return jsonify(m.parse(word))
+    return jsonify(get_morphs(word))
 
 
 # Run server

@@ -18,6 +18,11 @@ m = Morphemes("./morphemes")
 app = Flask(__name__)
 
 
+@app.route("/")
+def index():
+    return "Hello World!"
+
+
 @app.route("/morphemes", methods=["GET"])
 def morphemes():
     word = request.args["word"]

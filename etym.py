@@ -14,9 +14,4 @@ def get_etym(word):
 
         return etym_text
     except:
-        return "404"
-
-
-arr = filter(lambda morph: len(morph) > 0, "<re<<in<carn".split('<'))
-for i in arr:
-    print(i)
+        return ""

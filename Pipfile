@@ -8,6 +8,7 @@ flask = "*"
 morphemes = "*"
 requests = "*"
 beautifulsoup4 = "*"
+jsonpickle = "*"
 
 [dev-packages]
 

@@ -1,6 +1,5 @@
 from etym import get_etym
-from flask import Flask, request, jsonify
-from morphemes import Morphemes
+from flask import Flask, request
 from morph import get_morphs, get_root_spliced
 
 
@@ -11,8 +10,6 @@ def build_morpheme(morph, type, etym):
         "etym": etym
     }
 
-
-m = Morphemes("./morphemes")
 
 # Init app
 app = Flask(__name__)
@@ -53,7 +50,6 @@ def morphemes():
 
     for i in range(1, len(tree)):
         current_morph = tree[i]["text"]
-        print(f"-{current_morph}")
         suffixes.append(build_morpheme(current_morph, "bound",
                         get_etym(f"-{current_morph}")))
 
@@ -62,8 +58,6 @@ def morphemes():
         "root": root_morph,
         "suffixes": suffixes
     }
-
-    # return jsonify(morphs)
 
 
 # Run server

@@ -63,6 +63,8 @@ def morphemes():
         "suffixes": suffixes
     }
 
+    # return jsonify(morphs)
+
 
 # Run server
 if __name__ == "__main__":

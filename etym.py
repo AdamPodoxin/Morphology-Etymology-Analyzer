@@ -13,11 +13,15 @@ def get_etym(word):
         first_para = paras[0]
 
         i = 0
-        while i < len(paras) and  first_para.text == "":
+        while i < len(paras) and len(first_para.text) == 0:
             i += 1
             first_para = paras[i]
 
         etym_text = first_para.text
+
         return etym_text
     except:
-        return ""
+        if '-' in word:
+            return get_etym(word.replace('-', ''))
+        else:
+            return ""

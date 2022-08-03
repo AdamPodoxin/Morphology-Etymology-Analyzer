@@ -9,9 +9,15 @@ def get_etym(word):
 
     try:
         section = soup.find_all("section", class_="word__defination--2q7ZH")[0]
-        first_para = section.find("p")
-        etym_text = first_para.text
+        paras = section.findAll("p")
+        first_para = paras[0]
 
+        i = 0
+        while i < len(paras) and  first_para.text == "":
+            i += 1
+            first_para = paras[i]
+
+        etym_text = first_para.text
         return etym_text
     except:
         return ""

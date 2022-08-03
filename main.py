@@ -32,6 +32,8 @@ def get_suffixes(tree, tree_children):
         suffixes.append(build_morpheme(current_morph, "bound",
                         get_etym(f"-{current_morph}")))
 
+    return suffixes
+
 
 def analyze(word):
     morphs = get_morphs(word)

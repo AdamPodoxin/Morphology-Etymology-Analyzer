@@ -24,12 +24,22 @@ def get_suffixes(tree, tree_children):
     suffixes = []
     for i in range(1, len(tree_children)):
         current_morph = tree_children[i]["text"]
-        suffixes.append(build_morpheme(current_morph, "bound",
+
+        type = tree_children[i]["type"]
+        if type == "root":
+            type = "free"
+
+        suffixes.append(build_morpheme(current_morph, type,
                         get_etym(f"-{current_morph}")))
 
     for i in range(1, len(tree)):
         current_morph = tree[i]["text"]
-        suffixes.append(build_morpheme(current_morph, "bound",
+        
+        type = tree_children[i]["type"]
+        if type == "root":
+            type = "free"
+
+        suffixes.append(build_morpheme(current_morph, type,
                         get_etym(f"-{current_morph}")))
 
     return suffixes

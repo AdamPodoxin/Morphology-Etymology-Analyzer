@@ -17,7 +17,7 @@ def get_prefixes(root_spliced):
         prefixes.append(build_morpheme(current_morph, "bound",
                         get_etym(f"{current_morph}-")))
 
-        return prefixes
+    return prefixes
 
 
 def get_suffixes(tree, tree_children):

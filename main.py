@@ -22,25 +22,51 @@ def get_prefixes(root_spliced):
 
 def get_suffixes(tree, tree_children):
     suffixes = []
+    print(tree_children)
     for i in range(1, len(tree_children)):
         current_morph = tree_children[i]["text"]
+        add_morph = current_morph
 
         type = tree_children[i]["type"]
         if type == "root":
             type = "free"
+        else:
+            add_morph = f"-{current_morph}"
 
-        suffixes.append(build_morpheme(current_morph, type,
+        suffixes.append(build_morpheme(add_morph, type,
                         get_etym(f"-{current_morph}")))
 
-    for i in range(1, len(tree)):
-        current_morph = tree[i]["text"]
-        
-        type = tree_children[i]["type"]
-        if type == "root":
-            type = "free"
 
-        suffixes.append(build_morpheme(current_morph, type,
-                        get_etym(f"-{current_morph}")))
+    try:
+        for i in range(1, len(tree)):
+            current_morph = tree[i]["text"]
+            add_morph = current_morph
+            
+            type = tree[i]["type"]
+            if type == "root":
+                type = "free"
+            else:
+                add_morph = f"-{current_morph}"
+
+            suffixes.append(build_morpheme(add_morph, type,
+                            get_etym(f"-{current_morph}")))
+    except:
+        try:
+            for i in range(1, len(tree)):
+                current_morph = tree[i]["children"][0]["text"]
+                add_morph = current_morph
+                
+                type = tree[i]["children"][0]["type"]
+                if type == "root":
+                    type = "free"
+                else:
+                    add_morph = f"-{current_morph}"
+
+                suffixes.append(build_morpheme(add_morph, type,
+                                get_etym(f"-{current_morph}")))
+        finally:
+            print("")
+
 
     return suffixes
 
@@ -50,6 +76,7 @@ def analyze(word):
 
     tree = morphs["tree"]
     tree_children = tree[0]["children"]
+
     root = tree_children[0]["text"]
     root_spliced = get_root_spliced(root)
 

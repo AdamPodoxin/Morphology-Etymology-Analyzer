@@ -13,16 +13,16 @@ def build_morpheme(morph, type, etym):
 def get_prefixes(root_spliced):
     prefixes = []
     for i in range(len(root_spliced) - 1):
-        current_morph = root_spliced[i]
+        current_morph = f"{root_spliced[i]}-"
         prefixes.append(build_morpheme(current_morph, "bound",
-                        get_etym(f"{current_morph}-")))
+                        get_etym(current_morph)))
 
     return prefixes
 
 
 def get_suffixes(tree, tree_children):
     suffixes = []
-    print(tree_children)
+    
     for i in range(1, len(tree_children)):
         current_morph = tree_children[i]["text"]
         add_morph = current_morph

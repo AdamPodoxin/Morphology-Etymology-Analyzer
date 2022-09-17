@@ -16,5 +16,5 @@ def analyze_route():
 
     response = jsonify(analysis)
     response.headers.add('Access-Control-Allow-Origin', '*')
-    
+
     return response

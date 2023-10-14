@@ -118,10 +118,9 @@ async def root():
 
 @app.get("/analyze")
 async def analyze_route(word: str):
-    # analysis = analyze(word)
-    # return {
-    #     "prefixes": analysis.prefixes,
-    #     "root_morpheme": analysis.root_morpheme,
-    #     "suffixes": analysis.suffixes
-    # }
-    return {"word": word}
+    analysis = analyze(word)
+    return {
+        "prefixes": analysis.prefixes,
+        "root_morpheme": analysis.root_morpheme,
+        "suffixes": analysis.suffixes
+    }

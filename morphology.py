@@ -1,10 +1,10 @@
 from morphemes import Morphemes
 
 
-def get_morphs(word):
+def get_morphemes(word: str):
     m = Morphemes("./morphemes")
     return m.parse(word)
 
 
-def get_root_spliced(root):
+def splice_root(root: str):
     return list(filter(lambda morph: len(morph) > 0, root.split('<')))

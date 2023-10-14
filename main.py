@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-from morphology import get_morphemes
+from morphology import get_morphemes, format_morphology
 
 
 app = FastAPI()
@@ -15,10 +15,11 @@ async def root():
 async def analyze_route(word: str):
     print("Analyzing word:", word)
 
-    parsed_morphology = get_morphemes(word)
-    match parsed_morphology.status:
+    morphology = get_morphemes(word)
+    match morphology.status:
         case "FOUND_IN_DATABASE":
-            return JSONResponse({"morphology": jsonable_encoder(parsed_morphology)})
+            formatted_morphemes = format_morphology(morphology)
+            return JSONResponse(jsonable_encoder(formatted_morphemes))
         case "NOT_FOUND":
             return JSONResponse(content={}, status_code=status.HTTP_404_NOT_FOUND)
         case _:

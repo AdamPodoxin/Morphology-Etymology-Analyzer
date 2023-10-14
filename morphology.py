@@ -1,10 +1,20 @@
+from dataclasses import dataclass
+from typing import Literal, Optional, List
 from morphemes import Morphemes
+from dacite import from_dict
 
+
+m = Morphemes("./morphemes")
+
+
+@dataclass
+class ParsedMorphology():
+    status: Literal["FOUND_IN_DATABASE", "NOT_FOUND"]
+    word: str
+    morpheme_count: int
+    tree: Optional[List]
 
 def get_morphemes(word: str):
-    m = Morphemes("./morphemes")
-    return m.parse(word)
+    data = m.parse(word)
+    return from_dict(data_class=ParsedMorphology, data=data)
 
-
-def splice_root(root: str):
-    return list(filter(lambda morph: len(morph) > 0, root.split('<')))

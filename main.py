@@ -1,7 +1,8 @@
+import json
+from dataclasses import dataclass, is_dataclass, asdict
 from etymology import get_etymology
 from morphology import get_morphemes, splice_root
-from dataclasses import dataclass
-
+from fastapi import FastAPI
 
 @dataclass
 class Morpheme:
@@ -17,6 +18,13 @@ class Analysis:
     suffixes: str
 
 
+class EnhancedJSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if is_dataclass(o):
+            return asdict(o)
+        return super().default(o)
+
+
 def get_prefixes(root_spliced: list[str]):
     prefixes: list[Morpheme] = []
     for i in range(len(root_spliced) - 1):
@@ -24,6 +32,7 @@ def get_prefixes(root_spliced: list[str]):
         prefixes.append(Morpheme(current_morpheme, "bound", get_etymology(current_morpheme)))
 
     return prefixes
+
 
 
 def get_suffixes(tree, tree_children):
@@ -99,3 +108,19 @@ def analyze(word: str) -> Analysis:
     root_morpheme = Morpheme(root_word, "free", get_etymology(root_word))
 
     return Analysis(prefixes, root_morpheme, suffixes)
+
+app = FastAPI()
+
+
+@app.get("/")
+async def root():
+    return "Please specify a word with /analyze?word=WORD"
+
+@app.get("/analyze")
+async def analyze_route(word: str):
+    analysis = analyze(word)
+    return {
+        "prefixes": analysis.prefixes,
+        "root_morpheme": analysis.root_morpheme,
+        "suffixes": analysis.suffixes
+    }

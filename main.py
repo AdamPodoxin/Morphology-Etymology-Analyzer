@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import uvicorn
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -38,7 +37,3 @@ async def analyze(word: str):
 			return JSONResponse(content={}, status_code=status.HTTP_404_NOT_FOUND)
 		case _:
 			return JSONResponse(content={}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-if __name__ == "__main__":
-	uvicorn.run(app, host="127.0.0.1", port=8080)

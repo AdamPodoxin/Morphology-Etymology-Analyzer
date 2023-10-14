@@ -35,12 +35,17 @@ def get_morphemes(word: str):
 	data = m.parse(word)
 	return from_dict(data_class=Morphology, data=data)
 
-def format_morpheme(morpheme: Morpheme | FreeMorpheme) -> FormattedMorpheme:
-	if isinstance(morpheme, Morpheme):
-		type = "suffix" if morpheme.type == "bound" else morpheme.type
-		return FormattedMorpheme(text=morpheme.text, type=type)
-	else:
-		return format_morpheme(morpheme.children[0])
+def format_morpheme(morpheme: Morpheme):
+	type = "suffix" if morpheme.type == "bound" else morpheme.type
+	return FormattedMorpheme(text=morpheme.text, type=type)
 
 def format_morphology(morphology: Morphology):
-	return list(map(format_morpheme, morphology.tree))
+	formatted_morphemes: List[FormattedMorpheme] = []
+	
+	for morpheme in morphology.tree:
+		if isinstance(morpheme, FreeMorpheme):
+			formatted_morphemes.extend(map(format_morpheme, morpheme.children))
+		else:
+			formatted_morphemes.append(format_morpheme(morpheme))
+
+	return formatted_morphemes

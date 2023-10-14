@@ -1,5 +1,13 @@
+from dataclasses import dataclass
+from typing import List
 import requests
 from bs4 import BeautifulSoup
+from morphology import FormattedMorpheme
+
+
+@dataclass
+class FormattedMorphemeWithEtymology(FormattedMorpheme):
+	etymology: str
 
 
 def get_etymology(word: str) -> str:
@@ -26,3 +34,9 @@ def get_etymology(word: str) -> str:
     #         return get_etymology(word.replace('-', ''))
     #     else:
     #         return ""
+
+def get_etymology_for_morpheme(morpheme: FormattedMorpheme):
+	return FormattedMorphemeWithEtymology(type=morpheme.type, text=morpheme.text, etymology="")
+
+def get_etymology_for_morphemes(morphemes: List[FormattedMorpheme]):
+	return list(map(lambda morpheme: get_etymology_for_morpheme(morpheme), morphemes))

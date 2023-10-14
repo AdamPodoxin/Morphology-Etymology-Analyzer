@@ -1,9 +1,17 @@
+from dataclasses import dataclass
 import uvicorn
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from morphology import get_morphemes, format_morphology
-from etymology import get_etymology_for_morphemes
+from etymology import FormattedMorphemeWithEtymology, get_etymology_for_morphemes, extract_etymology_for_word
+
+
+@dataclass
+class Analysis:
+	word: str
+	etymology: str
+	morphemes_with_etymology: list[FormattedMorphemeWithEtymology]
 
 
 app = FastAPI()
@@ -23,7 +31,9 @@ async def analyze(word: str):
 			formatted_morphemes = format_morphology(morphology)
 			formatted_morphemes_with_etymology = get_etymology_for_morphemes(formatted_morphemes)
 
-			return JSONResponse(jsonable_encoder(formatted_morphemes_with_etymology))
+			analysis = Analysis(word=word, etymology=extract_etymology_for_word(word), morphemes_with_etymology=formatted_morphemes_with_etymology)
+
+			return JSONResponse(jsonable_encoder(analysis))
 		case "NOT_FOUND":
 			return JSONResponse(content={}, status_code=status.HTTP_404_NOT_FOUND)
 		case _:

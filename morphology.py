@@ -19,7 +19,6 @@ class FreeMorpheme:
 @dataclass
 class Morphology:
 	status: Literal["FOUND_IN_DATABASE", "NOT_FOUND"]
-	word: str
 	tree: Optional[List[Morpheme | FreeMorpheme]]
 
 

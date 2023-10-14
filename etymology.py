@@ -13,12 +13,14 @@ class FormattedMorphemeWithEtymology(FormattedMorpheme):
 def extract_etymology_for_word(word: str):
 	url = f"https://www.etymonline.com/word/{word}"
 	page = requests.get(url)
-	scraper = BeautifulSoup(page.content, "html.parser")
 
-	etymology_section = scraper.find(class_="word__defination--2q7ZH")
-	etymology_paragraph = etymology_section.findChild(name="p")
+	if page.status_code == 200:
+		scraper = BeautifulSoup(page.content, "html.parser")
 
-	return etymology_paragraph.text
+		etymology_section = scraper.find(class_="word__defination--2q7ZH")
+		etymology_paragraph = etymology_section.findChild(name="p")
+
+		return etymology_paragraph.text
 
 def get_etymology_for_morpheme(morpheme: FormattedMorpheme):
 	match morpheme.type:

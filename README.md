@@ -1,6 +1,6 @@
-# Morphology-Etymology-Analyzer
+# Morphology Etymology Analyzer
 
-A tool to analyze the morphemes of a word and the etyomology of the morphemes.
+An API to analyze the morphemes of a word and the etyomology of the morphemes.
 
 [API route](https://morphology-etymology-analyzer.fly.dev/{word})
 

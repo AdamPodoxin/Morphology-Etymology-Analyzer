@@ -1,4 +1,4 @@
-app = "morphology-etymology-api"
+app = "morphology-etymology-analyzer"
 primary_region = "sea"
 
 [build]

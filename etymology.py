@@ -2,26 +2,26 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def get_etym(word):
+def get_etymology(word: str) -> str:
     URL = f"https://www.etymonline.com/word/{word}"
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, "html.parser")
 
     try:
         section = soup.find_all("section", class_="word__defination--2q7ZH")[0]
-        paras = section.findAll("p")
-        first_para = paras[0]
+        paragraphs = section.findAll("p")
+        first_paragraph = paragraphs[0]
 
         i = 0
-        while i < len(paras) and len(first_para.text) == 0:
+        while i < len(paragraphs) and len(first_paragraph.text) == 0:
             i += 1
-            first_para = paras[i]
+            first_paragraph = paragraphs[i]
 
-        etym_text = first_para.text
+        etymology_text = first_paragraph.text
 
-        return etym_text
+        return etymology_text
     except:
         if '-' in word:
-            return get_etym(word.replace('-', ''))
+            return get_etymology(word.replace('-', ''))
         else:
             return ""

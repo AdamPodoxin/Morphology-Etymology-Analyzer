@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from fastapi import FastAPI, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from morphology import get_morphemes, format_morphology
@@ -14,6 +15,8 @@ class Analysis:
 
 
 app = FastAPI()
+
+app.add_middleware(CORSMiddleware, allow_origins=["*"])
 
 @app.get("/")
 async def root():

@@ -1,29 +1,37 @@
-from pydantic import BaseModel
+from type import Analysis, WordDoc
 
-from google.cloud.firestore_v1.base_query import FieldFilter
-from google.cloud.firestore_v1.base_collection import BaseCollectionReference
 from google.cloud.firestore_v1.document import DocumentReference
 
 from firebase import db
 
 
-class WordDoc(BaseModel):
-	word: str
-	etymology: str
-	morphemes: list[DocumentReference]
-
-	class Config:
-		arbitrary_types_allowed = True
-
-
 def get_word_doc_from_db(word: str):
-	words_ref: BaseCollectionReference = db.collection("words")
-	query_ref = words_ref.where(filter=FieldFilter("word", "==", word))
-	docs = query_ref.stream()
-
-	words: list[WordDoc] = []
-	for doc in docs:
-		dict = doc.to_dict()
-		words.append(WordDoc.model_validate(dict))
+	doc_ref = db.collection("words").document(word)
+	doc_snapshot = doc_ref.get()
 	
-	return words[0] if words else None
+	return WordDoc.model_validate(doc_snapshot.to_dict()) if doc_snapshot.exists else None
+
+def write_analysis_to_db(analysis: Analysis):
+	batch = db.batch()
+
+	morpheme_refs: list[DocumentReference] = []
+
+	for morpheme_with_etymology in analysis.morphemes_with_etymology:
+		doc_ref = db.collection("morphemes_with_etymology").document(morpheme_with_etymology.text)
+		doc_snapshot = doc_ref.get()
+
+		morpheme_refs.append(doc_ref)
+
+		if not doc_snapshot.exists:
+			batch.create(doc_ref, morpheme_with_etymology.model_dump())
+	
+	word_ref = db.collection("words").document(analysis.word)
+	word_doc = WordDoc(
+		word=analysis.word,
+		etymology=analysis.etymology,
+		morphemes_refs=morpheme_refs	
+	)
+
+	batch.create(word_ref, word_doc.model_dump())
+
+	batch.commit()

@@ -1,27 +1,8 @@
-from typing import Literal, Optional, List
-from pydantic import BaseModel
+from typing import List
+
+from type import FormattedMorpheme, FreeMorpheme, Morpheme, Morphology
 
 from morphemes import Morphemes
-
-
-class Morpheme(BaseModel):
-	text: str
-	type: Literal["root", "prefix", "bound"]
-
-
-class FreeMorpheme(BaseModel):
-	type: Literal["free"]
-	children: List[Morpheme]
-
-
-class Morphology(BaseModel):
-	status: Literal["FOUND_IN_DATABASE", "NOT_FOUND"]
-	tree: Optional[List[Morpheme | FreeMorpheme]]
-
-
-class FormattedMorpheme(BaseModel):
-	text: str
-	type: Literal["root", "prefix", "suffix"]
 
 
 m = Morphemes("./morphemes")

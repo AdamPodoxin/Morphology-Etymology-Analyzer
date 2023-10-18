@@ -1,13 +1,9 @@
 from typing import List
 
+from type import FormattedMorpheme, FormattedMorphemeWithEtymology
+
 import requests
 from bs4 import BeautifulSoup
-
-from morphology import FormattedMorpheme
-
-
-class FormattedMorphemeWithEtymology(FormattedMorpheme):
-	etymology: str
 
 
 def extract_etymology_for_word(word: str):

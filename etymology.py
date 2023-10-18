@@ -1,11 +1,11 @@
-from dataclasses import dataclass
 from typing import List
+
 import requests
 from bs4 import BeautifulSoup
+
 from morphology import FormattedMorpheme
 
 
-@dataclass
 class FormattedMorphemeWithEtymology(FormattedMorpheme):
 	etymology: str
 
@@ -33,7 +33,7 @@ def get_etymology_for_morpheme(morpheme: FormattedMorpheme):
 
 	etymology = extract_etymology_for_word(word)
 
-	return FormattedMorphemeWithEtymology(morpheme.text, morpheme.type, etymology)
+	return FormattedMorphemeWithEtymology(text=morpheme.text, type=morpheme.type, etymology=etymology)
 
 def get_etymology_for_morphemes(morphemes: List[FormattedMorpheme]):
 	return list(map(lambda morpheme: get_etymology_for_morpheme(morpheme), morphemes))

@@ -1,29 +1,25 @@
-from dataclasses import dataclass
 from typing import Literal, Optional, List
+from pydantic import BaseModel
+
 from morphemes import Morphemes
-from dacite import from_dict
 
 
-@dataclass
-class Morpheme:
+class Morpheme(BaseModel):
 	text: str
 	type: Literal["root", "prefix", "bound"]
 
 
-@dataclass
-class FreeMorpheme:
+class FreeMorpheme(BaseModel):
 	type: Literal["free"]
 	children: List[Morpheme]
 
 
-@dataclass
-class Morphology:
+class Morphology(BaseModel):
 	status: Literal["FOUND_IN_DATABASE", "NOT_FOUND"]
 	tree: Optional[List[Morpheme | FreeMorpheme]]
 
 
-@dataclass
-class FormattedMorpheme:
+class FormattedMorpheme(BaseModel):
 	text: str
 	type: Literal["root", "prefix", "suffix"]
 
@@ -32,7 +28,7 @@ m = Morphemes("./morphemes")
 
 def get_morphemes(word: str):
 	data = m.parse(word)
-	return from_dict(data_class=Morphology, data=data)
+	return Morphology.model_validate(data)
 
 def format_morpheme(morpheme: Morpheme):
 	type = "suffix" if morpheme.type == "bound" else morpheme.type

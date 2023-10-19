@@ -1,11 +1,12 @@
 import subprocess
 
-from firebase import get_firebase_credentials
+from firebase import FirebaseCredentials
 
 
-firebase_credentials = get_firebase_credentials()
+firebase_credentials = FirebaseCredentials.load_from_env()
+env_dict = firebase_credentials.to_env_dict()
 
-# subprocess.run(f"fly secrets set {' '.join(list(map(lambda key: f'{key}={firebase_credentials[key]}', firebase_credentials)))}")
-print(f"fly secrets set {' '.join(list(map(lambda key: f'{key}={firebase_credentials[key]}', firebase_credentials)))}")
+command = f"fly secrets set {' '.join(map(lambda key: f'{key}={env_dict[key]}', env_dict))}"
+subprocess.run(command)
 
-print("Set keys", firebase_credentials.keys(), "on Fly")
+print("Set keys ", list(env_dict), "on Fly")

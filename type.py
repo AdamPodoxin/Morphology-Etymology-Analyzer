@@ -41,7 +41,7 @@ class FormattedMorpheme(BaseModel):
 # Etymology
 
 class FormattedMorphemeWithEtymology(FormattedMorpheme):
-	etymology: str
+	etymology: str | None
 
 
 # Main

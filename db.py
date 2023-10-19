@@ -2,7 +2,9 @@ from type import Analysis, WordDoc
 
 from google.cloud.firestore_v1.document import DocumentReference
 
-from firebase import db
+from firebase import initialize_firebase
+
+(db) = initialize_firebase()
 
 
 def get_word_doc_from_db(word: str):

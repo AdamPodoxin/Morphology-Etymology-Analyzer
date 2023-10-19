@@ -66,7 +66,7 @@ class FirebaseCredentials:
 
 	def to_certificate(self):
 		credentials = self.to_dict()
-		credentials["private_key"] = credentials["private_key"].replace("__NEWLINE__", "\n").replace("__SPACE__", " ")
+		credentials["private_key"] = credentials["private_key"].replace("%0A", "\n").replace("%20", " ")
 
 		return Certificate(credentials)
 
